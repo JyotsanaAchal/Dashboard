@@ -1,56 +1,115 @@
-/* DashboardHome.css */
-
-.dashboard {
+.dashboard-container {
   max-width: 900px;
   margin: 2rem auto;
-  padding: 1rem 2rem;
+  padding: 2rem;
   background: #f8f9fc; /* very light pastel purple-blue */
   border-radius: 12px;
   box-shadow: 0 6px 12px rgba(131, 144, 189, 0.15);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #3c3c3c;
+  min-height: calc(100vh - 4rem); /* adjust to fit page height minus margin */
+  box-sizing: border-box;
 }
 
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.8rem;
+.dashboard {
+  width: 100%;
+  padding: 0; /* Removed internal padding */
+  background: transparent;
+  border-radius: 0;
 }
 
-.dashboard-header h1 {
-  font-size: 1.9rem;
-  color: #5a4e8b; /* pastel purple */
-}
-
-.dashboard-buttons button {
-  margin-left: 1rem;
-  padding: 0.5rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
+.greeting {
+  text-align: center;
+  font-size: 1.4rem;
+  color: #4a3b6d;
   font-weight: 600;
+  margin-bottom: 1.5rem;
+  background: #eae6ff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(120, 104, 170, 0.1);
+}
+
+/* Toggle Button */
+.toggle-button {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+  font-size: 1.5rem;
+  background: #b39ddb;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background: #f1f0fc;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+}
+
+.sidebar .profile-pic {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.sidebar h2 {
+  margin: 0.5rem 0 0.2rem;
+  font-size: 1.2rem;
+  color: #4c3d84;
+}
+
+.sidebar p {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+  color: #5c5c6b;
+}
+
+.sidebar .btn {
+  margin-top: 1rem;
+  width: 80%;
+  padding: 0.5rem;
+  font-weight: bold;
+  border-radius: 6px;
+  border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.btn.primary {
-  background-color: #a2c4f7; /* pastel blue */
+.sidebar .primary {
+  background-color: #a2c4f7;
   color: #2a3a7b;
 }
 
-.btn.primary:hover {
+.sidebar .primary:hover {
   background-color: #8ab3f5;
 }
 
-.btn.secondary {
-  background-color: #b39ddb; /* pastel purple */
+.sidebar .secondary {
+  background-color: #b39ddb;
   color: #3b2f6c;
 }
 
-.btn.secondary:hover {
+.sidebar .secondary:hover {
   background-color: #9e8fcc;
 }
+
+/* Main Dashboard */
 
 .dashboard-section h2 {
   margin-bottom: 1rem;
@@ -101,7 +160,7 @@
   padding: 0.4rem 1rem;
   font-size: 0.85rem;
   border-radius: 6px;
-  background-color: #b0b9f2; /* pastel blue */
+  background-color: #b0b9f2;
   color: #303973;
   border: none;
   cursor: pointer;
