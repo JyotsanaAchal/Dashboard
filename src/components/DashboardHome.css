@@ -1,0 +1,125 @@
+/* DashboardHome.css */
+
+.dashboard {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  background: #f8f9fc; /* very light pastel purple-blue */
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(131, 144, 189, 0.15);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #3c3c3c;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.8rem;
+}
+
+.dashboard-header h1 {
+  font-size: 1.9rem;
+  color: #5a4e8b; /* pastel purple */
+}
+
+.dashboard-buttons button {
+  margin-left: 1rem;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn.primary {
+  background-color: #a2c4f7; /* pastel blue */
+  color: #2a3a7b;
+}
+
+.btn.primary:hover {
+  background-color: #8ab3f5;
+}
+
+.btn.secondary {
+  background-color: #b39ddb; /* pastel purple */
+  color: #3b2f6c;
+}
+
+.btn.secondary:hover {
+  background-color: #9e8fcc;
+}
+
+.dashboard-section h2 {
+  margin-bottom: 1rem;
+  color: #6e5a9a;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(130, 134, 180, 0.1);
+}
+
+.employee-table thead tr {
+  background-color: #d1d5f0; /* pastel light blue */
+}
+
+.employee-table th,
+.employee-table td {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 1rem;
+  color: #4a4a6a;
+  border-bottom: 1px solid #e0e4f7;
+}
+
+.employee-table tbody tr:hover {
+  background-color: #edeffd; /* subtle highlight */
+  cursor: default;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.8rem;
+  gap: 1rem;
+}
+
+.btn.small {
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  background-color: #b0b9f2; /* pastel blue */
+  color: #303973;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn.small:disabled {
+  background-color: #d7d9f8;
+  cursor: not-allowed;
+  color: #a5a8c9;
+}
+
+.btn.small:hover:not(:disabled) {
+  background-color: #8f9cea;
+}
+
+.page-info {
+  font-size: 1rem;
+  color: #5f5d7b;
+  font-weight: 600;
+}

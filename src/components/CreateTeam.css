@@ -1,0 +1,163 @@
+/* CreateTeam.css */
+
+.create-team {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  background: #f0f4ff; /* pastel light blue */
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(110, 110, 200, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #3a3a5e;
+}
+
+.create-team h1 {
+  text-align: center;
+  margin-bottom: 1.8rem;
+  color: #6b58a0; /* pastel purple */
+}
+
+.toggle-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.toggle-container button {
+  background: #d9dbf3;
+  border: none;
+  padding: 0.5rem 1.3rem;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #4c4a6a;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.toggle-container button.active,
+.toggle-container button:hover {
+  background: #a5a1d6;
+  color: white;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 2px solid #bbbce4;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #7d77c4;
+}
+
+.results-container {
+  max-height: 250px;
+  overflow-y: auto;
+  margin-bottom: 1.5rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 7px rgba(105, 104, 150, 0.1);
+  padding: 0.8rem 1rem;
+}
+
+.manager-item {
+  margin-bottom: 0.8rem;
+  border-bottom: 1px solid #dbdbf3;
+}
+
+.manager-header {
+  cursor: pointer;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0;
+  color: #5a4e8b;
+}
+
+.directs-list {
+  margin-top: 0.4rem;
+  padding-left: 1rem;
+}
+
+.checkbox-label {
+  display: block;
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+  cursor: pointer;
+  user-select: none;
+  color: #3a3a5e;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.selected-container {
+  background: #e4e6fc;
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  min-height: 60px;
+}
+
+.selected-container h3 {
+  margin-bottom: 0.7rem;
+  color: #6b58a0;
+}
+
+.selected-container ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.selected-container li {
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: #3a3a5e;
+}
+
+.remove-btn {
+  background: transparent;
+  border: none;
+  color: #a54242;
+  font-size: 1.1rem;
+  margin-left: 0.8rem;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: color 0.2s ease;
+}
+
+.remove-btn:hover {
+  color: #7a1e1e;
+}
+
+.btn.add-team-btn {
+  display: block;
+  margin: 0 auto;
+  background-color: #7a74c2;
+  color: white;
+  border: none;
+  padding: 0.7rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn.add-team-btn:disabled {
+  background-color: #bbbce4;
+  cursor: not-allowed;
+}
+
+.btn.add-team-btn:hover:not(:disabled) {
+  background-color: #5a4e8b;
+}
