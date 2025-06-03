@@ -1,0 +1,101 @@
+[
+  {
+    "teamName": "Alpha Squad",
+    "manager": "John Doe",
+    "employeeIds": [
+      "EMP054",
+      "EMP011",
+      "EMP021",
+      "EMP066",
+      "EMP010",
+      "EMP087",
+      "EMP045"
+    ]
+  },
+  {
+    "teamName": "Beta Force",
+    "manager": "Sara Lee",
+    "employeeIds": ["EMP076", "EMP033", "EMP002", "EMP030", "EMP091", "EMP012"]
+  },
+  {
+    "teamName": "Gamma Crew",
+    "manager": "Michael Brown",
+    "employeeIds": [
+      "EMP020",
+      "EMP071",
+      "EMP025",
+      "EMP007",
+      "EMP084",
+      "EMP039",
+      "EMP017"
+    ]
+  },
+  {
+    "teamName": "Delta League",
+    "manager": "Alice Smith",
+    "employeeIds": ["EMP051", "EMP090", "EMP005", "EMP065", "EMP077", "EMP008"]
+  },
+  {
+    "teamName": "Epsilon Unit",
+    "manager": "Bob Johnson",
+    "employeeIds": [
+      "EMP074",
+      "EMP028",
+      "EMP099",
+      "EMP048",
+      "EMP043",
+      "EMP015",
+      "EMP082"
+    ]
+  },
+  {
+    "teamName": "Zeta Taskforce",
+    "manager": "John Doe",
+    "employeeIds": ["EMP001", "EMP069", "EMP056", "EMP044", "EMP078", "EMP013"]
+  },
+  {
+    "teamName": "Omega Ops",
+    "manager": "Sara Lee",
+    "employeeIds": ["EMP022", "EMP097", "EMP040", "EMP086", "EMP073", "EMP009"]
+  },
+  {
+    "teamName": "Nova Team",
+    "manager": "Michael Brown",
+    "employeeIds": ["EMP006", "EMP080", "EMP014", "EMP018", "EMP041", "EMP085"]
+  },
+  {
+    "teamName": "Phoenix Force",
+    "manager": "Alice Smith",
+    "employeeIds": ["EMP046", "EMP061", "EMP035", "EMP050", "EMP038", "EMP016"]
+  },
+  {
+    "teamName": "Titan Group",
+    "manager": "Bob Johnson",
+    "employeeIds": ["EMP019", "EMP037", "EMP064", "EMP070", "EMP032", "EMP027"]
+  },
+  {
+    "teamName": "Stellar Corps",
+    "manager": "John Doe",
+    "employeeIds": ["EMP098", "EMP023", "EMP042", "EMP067", "EMP055", "EMP063"]
+  },
+  {
+    "teamName": "Crimson Guard",
+    "manager": "Alice Smith",
+    "employeeIds": ["EMP036", "EMP004", "EMP088", "EMP059", "EMP034", "EMP072"]
+  },
+  {
+    "teamName": "Radiant Knights",
+    "manager": "Sara Lee",
+    "employeeIds": ["EMP003", "EMP079", "EMP031", "EMP024", "EMP026", "EMP096"]
+  },
+  {
+    "teamName": "Iron Watch",
+    "manager": "Bob Johnson",
+    "employeeIds": ["EMP095", "EMP047", "EMP029", "EMP060", "EMP058", "EMP083"]
+  },
+  {
+    "teamName": "Cyber Front",
+    "manager": "Michael Brown",
+    "employeeIds": ["EMP075", "EMP089", "EMP062", "EMP053", "EMP052", "EMP068"]
+  }
+]
