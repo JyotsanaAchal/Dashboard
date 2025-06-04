@@ -2,9 +2,9 @@
   max-width: 900px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #f8f9fc; /* very light pastel purple-blue */
+  background: #fef9f5; /* very light pastel peach */
   border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(131, 144, 189, 0.15);
+  box-shadow: 0 6px 12px rgba(245, 184, 142, 0.15);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #3c3c3c;
   min-height: calc(100vh - 4rem); /* adjust to fit page height minus margin */
@@ -21,20 +21,20 @@
 .greeting {
   text-align: center;
   font-size: 1.4rem;
-  color: #4a3b6d;
+  color: #b85450; /* warm red */
   font-weight: 600;
   margin-bottom: 1.5rem;
-  background: #eae6ff;
+  background: #fff0cc; /* light yellow */
   padding: 0.8rem 1.2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(120, 104, 170, 0.1);
+  box-shadow: 0 2px 6px rgba(245, 190, 125, 0.2);
 }
 
 /* Main Dashboard */
 
 .dashboard-section h2 {
   margin-bottom: 1rem;
-  color: #6e5a9a;
+  color: #d4713a; /* warm orange-red */
   font-weight: 700;
   font-size: 1.5rem;
 }
@@ -48,11 +48,11 @@
   border-collapse: collapse;
   background: white;
   border-radius: 10px;
-  box-shadow: 0 3px 6px rgba(130, 134, 180, 0.1);
+  box-shadow: 0 3px 6px rgba(245, 180, 140, 0.15);
 }
 
 .employee-table thead tr {
-  background-color: #d1d5f0; /* pastel light blue */
+  background-color: #ffeaa7; /* pastel yellow */
 }
 
 .employee-table th,
@@ -60,12 +60,12 @@
   padding: 12px 15px;
   text-align: left;
   font-size: 1rem;
-  color: #4a4a6a;
-  border-bottom: 1px solid #e0e4f7;
+  color: #6b4e3d; /* warm brown */
+  border-bottom: 1px solid #fdf2e0;
 }
 
 .employee-table tbody tr:hover {
-  background-color: #edeffd; /* subtle highlight */
+  background-color: #fff5e6; /* very light peachy yellow */
   cursor: default;
 }
 
@@ -81,25 +81,25 @@
   padding: 0.4rem 1rem;
   font-size: 0.85rem;
   border-radius: 6px;
-  background-color: #b0b9f2;
-  color: #303973;
+  background-color: #f5a3a3; /* pastel red */
+  color: #8b2635; /* darker red */
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .btn.small:disabled {
-  background-color: #d7d9f8;
+  background-color: #f9d5d5; /* very light red */
   cursor: not-allowed;
-  color: #a5a8c9;
+  color: #c9a0a0; /* muted red */
 }
 
 .btn.small:hover:not(:disabled) {
-  background-color: #8f9cea;
+  background-color: #ed8a8a; /* slightly darker pastel red */
 }
 
 .page-info {
   font-size: 1rem;
-  color: #5f5d7b;
+  color: #a0674a; /* warm brown for page info */
   font-weight: 600;
 }

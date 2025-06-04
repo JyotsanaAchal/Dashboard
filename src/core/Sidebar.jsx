@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
@@ -12,17 +11,23 @@ const Sidebar = ({
   const [showSidebar, setShowSidebar] = useState(false);
   const [showTeamsDropdown, setShowTeamsDropdown] = useState(false);
   const [showPersonalInfo, setShowPersonalInfo] = useState(false);
+  const [atTop, setAtTop] = useState(true);
+
   const sidebarRef = useRef(null);
   const personalInfoRef = useRef(null);
 
-  const toggleSidebar = () => setShowSidebar(!showSidebar);
-  const toggleTeamsDropdown = () => setShowTeamsDropdown(!showTeamsDropdown);
-  const togglePersonalInfo = () => setShowPersonalInfo(!showPersonalInfo);
+  // Hide buttons when scrolling down
+  useEffect(() => {
+    const handleScroll = () => {
+      setAtTop(window.scrollY < 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  // Handle clicking outside the sidebar and personal info
+  // Close on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Check if click is outside sidebar and not on toggle button
       if (
         sidebarRef.current &&
         !sidebarRef.current.contains(event.target) &&
@@ -32,7 +37,6 @@ const Sidebar = ({
         setShowTeamsDropdown(false);
       }
 
-      // Check if click is outside personal info
       if (
         personalInfoRef.current &&
         !personalInfoRef.current.contains(event.target) &&
@@ -45,10 +49,7 @@ const Sidebar = ({
     if (showSidebar || showPersonalInfo) {
       document.addEventListener("mousedown", handleClickOutside);
     }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showSidebar, showPersonalInfo]);
 
   const handleMenuClick = (path) => {
@@ -60,17 +61,22 @@ const Sidebar = ({
 
   return (
     <>
-      {/* Toggle Button - Always visible */}
-      <button className="toggle-button" onClick={toggleSidebar}>
+      <button
+        className={`toggle-button ${atTop ? "visible" : "hidden"} ${
+          showSidebar ? "open" : ""
+        }`}
+        onClick={() => setShowSidebar(!showSidebar)}
+      >
         ☰
       </button>
 
-      {/* Personal Info Icon - Top Right Corner */}
-      <div className="personal-info-container" ref={personalInfoRef}>
+      <div
+        className={`personal-info-container ${atTop ? "visible" : "hidden"}`}
+        ref={personalInfoRef}
+      >
         <button
           className="personal-info-icon"
-          onClick={togglePersonalInfo}
-          aria-label="Personal Information"
+          onClick={() => setShowPersonalInfo(!showPersonalInfo)}
         >
           👤
         </button>
@@ -83,14 +89,16 @@ const Sidebar = ({
         )}
       </div>
 
-      {/* Sidebar - Only visible when showSidebar is true */}
+      {showSidebar && <div className="sidebar-overlay"></div>}
+
       {showSidebar && (
         <aside className="sidebar" ref={sidebarRef}>
-          {/* Menu Options */}
           <nav className="sidebar-menu">
-            {/* Manage Teams with Dropdown */}
             <div className="menu-item">
-              <div className="menu-option" onClick={toggleTeamsDropdown}>
+              <div
+                className="menu-option"
+                onClick={() => setShowTeamsDropdown(!showTeamsDropdown)}
+              >
                 <span>Manage Teams</span>
                 <span
                   className={`dropdown-arrow ${
@@ -117,14 +125,12 @@ const Sidebar = ({
                 </div>
               )}
             </div>
-
-            {/* Generate Report */}
             <div className="menu-item">
               <div
                 className="menu-option"
                 onClick={() => handleMenuClick("/generate-report")}
               >
-                <span>Generate Report</span>
+                Generate Report
               </div>
             </div>
           </nav>

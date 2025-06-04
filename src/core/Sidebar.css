@@ -1,61 +1,98 @@
+/* Sidebar Container */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100%;
   width: 280px;
-  background: linear-gradient(135deg, #f8f7ff 0%, #f1f0fc 100%);
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #fef5f5 0%, #fffbf0 100%);
+  box-shadow: 2px 0 12px rgba(215, 30, 40, 0.15);
   padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   z-index: 1000;
   transition: transform 0.3s ease;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Personal Info Container - Top Right Corner */
+/* Toggle Button */
+.toggle-button {
+  position: fixed;
+  top: 15px;
+  left: 20px;
+  z-index: 1001;
+  font-size: 1.4rem;
+  background: transparent;
+  color: white;
+  border: 2px solid transparent;
+  padding: 0.4rem 0.7rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: none;
+}
+
+.toggle-button.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Visible when at top */
+.toggle-button.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Sidebar is open */
+.toggle-button.open {
+  background: linear-gradient(135deg, #d71e28 0%, #ffcd41 100%);
+  color: white;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 12px rgba(215, 30, 40, 0.3);
+}
+
+/* Personal Info */
 .personal-info-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 15px;
+  right: 75px;
   z-index: 999;
 }
 
 .personal-info-icon {
-  background: linear-gradient(135deg, #b39ddb 0%, #a2c4f7 100%);
-  color: white;
-  border: none;
-  width: 50px;
-  height: 50px;
+  background: #fff;
+  border: 2px solid #d71e28;
+  color: #d71e28;
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(179, 157, 219, 0.3);
+  box-shadow: 0 2px 6px rgba(215, 30, 40, 0.2);
 }
 
 .personal-info-icon:hover {
-  background: linear-gradient(135deg, #9e8fcc 0%, #8ab3f5 100%);
+  background: #fff7f0;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(179, 157, 219, 0.4);
 }
 
 .personal-info-dropdown {
   position: absolute;
   top: 60px;
   right: 0;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f7ff 100%);
+  background: #fffdf8;
   padding: 1.2rem 1.5rem;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   min-width: 200px;
   text-align: right;
-  border: 1px solid rgba(179, 157, 219, 0.2);
+  border: 1px solid rgba(255, 205, 65, 0.4);
   animation: slideDown 0.3s ease;
   backdrop-filter: blur(10px);
 }
@@ -75,14 +112,14 @@
 .personal-info-dropdown h3 {
   margin: 0 0 0.5rem;
   font-size: 1.1rem;
-  color: #4c3d84;
+  color: #d71e28;
   font-weight: 600;
 }
 
 .personal-info-dropdown p {
   margin: 0.3rem 0;
   font-size: 0.85rem;
-  color: #6b6b7d;
+  color: #996f00;
   font-weight: 400;
 }
 
@@ -93,6 +130,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 2rem 0;
+  transform: translateY(-3rem);
 }
 
 .menu-item {
@@ -106,11 +144,11 @@
   padding: 1.2rem 2rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: #4c3d84;
+  color: #d71e28;
   font-weight: 600;
   font-size: 1rem;
   border-left: 4px solid transparent;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.7);
   margin: 0.5rem 1rem;
   border-radius: 12px;
   backdrop-filter: blur(10px);
@@ -119,12 +157,12 @@
 .menu-option:hover {
   background: linear-gradient(
     90deg,
-    rgba(162, 196, 247, 0.4) 0%,
-    rgba(179, 157, 219, 0.3) 100%
+    rgba(255, 205, 65, 0.3) 0%,
+    rgba(215, 30, 40, 0.1) 100%
   );
-  border-left-color: #a2c4f7;
+  border-left-color: #ffcd41;
   transform: translateX(4px);
-  box-shadow: 0 4px 12px rgba(162, 196, 247, 0.2);
+  box-shadow: 0 4px 12px rgba(255, 205, 65, 0.3);
 }
 
 .menu-option span:first-child {
@@ -134,7 +172,7 @@
 .dropdown-arrow {
   font-size: 0.9rem;
   transition: transform 0.3s ease;
-  color: #8b7bb8;
+  color: #cc9900;
   font-weight: bold;
 }
 
@@ -144,16 +182,49 @@
 
 /* Dropdown Menu */
 .dropdown-menu {
-  background: rgba(255, 255, 255, 0.9);
-  border-left: 4px solid #b39ddb;
+  background: rgba(255, 255, 255, 0.95);
+  border-left: 4px solid #ffcd41;
   margin: 0.5rem 1rem 0 2rem;
   border-radius: 8px;
   overflow: hidden;
   animation: slideDown 0.3s ease;
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 12px rgba(179, 157, 219, 0.15);
+  box-shadow: 0 4px 12px rgba(255, 205, 65, 0.25);
 }
 
+.dropdown-item {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background: linear-gradient(90deg, #ffcd41 0%, #d71e28 100%);
+  color: white;
+  transform: translateX(4px);
+  font-weight: 600;
+}
+
+/* Mobile Overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Animation */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -165,59 +236,30 @@
   }
 }
 
-.dropdown-item {
-  padding: 1rem 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: #5c5c6b;
-  font-size: 0.9rem;
-  font-weight: 500;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+/* Scroll Visibility Classes */
+.toggle-button,
+.personal-info-container {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.dropdown-item:last-child {
-  border-bottom: none;
+.toggle-button.hidden,
+.personal-info-container.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-.dropdown-item:hover {
-  background: linear-gradient(90deg, #b39ddb 0%, #a2c4f7 100%);
-  color: white;
-  transform: translateX(4px);
-  font-weight: 600;
-}
-
-/* Toggle Button */
-.toggle-button {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1001;
-  font-size: 1.4rem;
-  background: linear-gradient(135deg, #b39ddb 0%, #a2c4f7 100%);
-  color: white;
-  border: none;
-  padding: 0.6rem 0.9rem;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(179, 157, 219, 0.3);
-}
-
-.toggle-button:hover {
-  background: linear-gradient(135deg, #9e8fcc 0%, #8ab3f5 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(179, 157, 219, 0.4);
-}
-
-.toggle-button:active {
-  transform: translateY(0);
+.toggle-button.visible,
+.personal-info-container.visible {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
-    max-width: 320px;
+    max-width: 300px;
   }
 
   .toggle-button {
@@ -225,5 +267,31 @@
     left: 15px;
     padding: 0.5rem 0.8rem;
     font-size: 1.2rem;
+  }
+
+  .personal-info-container {
+    top: 15px;
+    right: 15px;
+  }
+
+  .personal-info-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+
+  .personal-info-dropdown {
+    min-width: 160px;
+    padding: 1rem 1.2rem;
+  }
+
+  .menu-option {
+    padding: 1rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .dropdown-item {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.85rem;
   }
 }

@@ -4,10 +4,12 @@ import DashboardHome from "./components/DashboardHome";
 import CreateTeam from "./components/CreateTeam.jsx";
 import ModifyTeams from "./components/ModifyTeams.jsx";
 import Sidebar from "./core/Sidebar.jsx";
+import Header from "./core/Header";
 
 function App() {
   return (
     <>
+      <Header />
       <Router>
         <Sidebar />
         <Routes>

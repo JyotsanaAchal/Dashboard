@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import employees from "../data/sampleEmployees.json";
 import "./CreateTeam.css";
 
+// Simulate logged-in manager - replace with actual auth logic
+const LOGGED_IN_MANAGER = "John Doe"; // Example manager name
+
 const managers = [...new Set(employees.map((e) => e.manager))];
 
 const CreateTeam = () => {
@@ -11,13 +14,46 @@ const CreateTeam = () => {
   const [expandedManager, setExpandedManager] = useState(null);
   const [selectedEmployees, setSelectedEmployees] = useState([]);
 
-  const filteredManagers = managers
-    .filter((mgr) => mgr.toLowerCase().includes(searchTerm.toLowerCase()))
-    .slice(0, 5);
+  // Pagination for direct reports
+  const [directsPage, setDirectsPage] = useState(1);
+  const DIRECTS_PER_PAGE = 5;
 
-  const filteredEmployees = employees
-    .filter((emp) => emp.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    .slice(0, 5);
+  // Get logged-in manager's direct reports
+  const loggedInManagerDirects = employees.filter(
+    (emp) => emp.manager === LOGGED_IN_MANAGER
+  );
+
+  // Pagination for direct reports
+  const totalDirectsPages = Math.ceil(
+    loggedInManagerDirects.length / DIRECTS_PER_PAGE
+  );
+  const paginatedDirects = loggedInManagerDirects.slice(
+    (directsPage - 1) * DIRECTS_PER_PAGE,
+    directsPage * DIRECTS_PER_PAGE
+  );
+
+  // Filter out logged-in manager from search results and their direct reports from employee search
+  const filteredManagers =
+    searchTerm.trim() === ""
+      ? []
+      : managers
+          .filter(
+            (mgr) =>
+              mgr.toLowerCase().includes(searchTerm.toLowerCase()) &&
+              mgr !== LOGGED_IN_MANAGER // Exclude logged-in manager
+          )
+          .slice(0, 5);
+
+  const filteredEmployees =
+    searchTerm.trim() === ""
+      ? []
+      : employees
+          .filter(
+            (emp) =>
+              emp.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+              emp.manager !== LOGGED_IN_MANAGER // Exclude manager's direct reports from employee search
+          )
+          .slice(0, 5);
 
   const directs = expandedManager
     ? employees.filter((emp) => emp.manager === expandedManager)
@@ -47,6 +83,32 @@ const CreateTeam = () => {
     setTeamName("");
     setSearchTerm("");
     setExpandedManager(null);
+    setDirectsPage(1);
+  };
+
+  // Handle search term changes and reset expanded manager
+  const handleSearchTermChange = (e) => {
+    setSearchTerm(e.target.value);
+    setExpandedManager(null);
+  };
+
+  // Check if all visible direct reports are selected
+  const allDirectsSelected =
+    paginatedDirects.length > 0 &&
+    paginatedDirects.every((emp) => isSelected(emp));
+
+  // Handle select all direct reports (current page)
+  const handleSelectAllDirects = (checked) => {
+    if (checked) {
+      const newEmployees = paginatedDirects.filter((emp) => !isSelected(emp));
+      setSelectedEmployees([...selectedEmployees, ...newEmployees]);
+    } else {
+      const currentPageIds = new Set(paginatedDirects.map((emp) => emp.id));
+      const remaining = selectedEmployees.filter(
+        (emp) => !currentPageIds.has(emp.id)
+      );
+      setSelectedEmployees(remaining);
+    }
   };
 
   return (
@@ -68,6 +130,67 @@ const CreateTeam = () => {
         />
       </div>
 
+      {/* Your Direct Reports Section - Always visible if manager has direct reports */}
+      {loggedInManagerDirects.length > 0 && (
+        <div className="directs-section">
+          <h3>Your Direct Reports ({loggedInManagerDirects.length})</h3>
+          <div className="directs-container">
+            {paginatedDirects.length > 0 && (
+              <label className="checkbox-label select-all">
+                <input
+                  type="checkbox"
+                  checked={allDirectsSelected}
+                  onChange={(e) => handleSelectAllDirects(e.target.checked)}
+                />
+                Select All on Page {directsPage}
+              </label>
+            )}
+
+            <div className="directs-list">
+              {paginatedDirects.map((emp) => (
+                <label key={emp.id} className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={isSelected(emp)}
+                    onChange={() => toggleEmployeeSelection(emp)}
+                  />
+                  {emp.name} ({emp.email})
+                </label>
+              ))}
+            </div>
+
+            {/* Pagination Controls */}
+            {totalDirectsPages > 1 && (
+              <div className="pagination-container">
+                <button
+                  className="pagination-btn"
+                  onClick={() =>
+                    setDirectsPage((prev) => Math.max(1, prev - 1))
+                  }
+                  disabled={directsPage === 1}
+                >
+                  Previous
+                </button>
+                <span className="pagination-info">
+                  Page {directsPage} of {totalDirectsPages}
+                </span>
+                <button
+                  className="pagination-btn"
+                  onClick={() =>
+                    setDirectsPage((prev) =>
+                      Math.min(totalDirectsPages, prev + 1)
+                    )
+                  }
+                  disabled={directsPage === totalDirectsPages}
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Search Mode Toggle */}
       <div className="toggle-container">
         <button
@@ -78,7 +201,7 @@ const CreateTeam = () => {
             setExpandedManager(null);
           }}
         >
-          Search Managers
+          Search Other Managers
         </button>
         <button
           className={searchMode === "employees" ? "active" : ""}
@@ -88,7 +211,7 @@ const CreateTeam = () => {
             setExpandedManager(null);
           }}
         >
-          Search Employees
+          Search Other Employees
         </button>
       </div>
 
@@ -97,100 +220,107 @@ const CreateTeam = () => {
         type="text"
         placeholder={
           searchMode === "managers"
-            ? "Search managers..."
-            : "Search employees..."
+            ? "Search other managers..."
+            : "Search other employees..."
         }
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={handleSearchTermChange}
         className="search-input"
       />
 
-      {/* Results */}
-      <div className="results-container">
-        {searchMode === "managers" &&
-          filteredManagers.length === 0 &&
-          searchTerm.length > 0 && <p>No managers found.</p>}
+      {/* Results - Only show when there's a search term */}
+      {searchTerm.trim() !== "" && (
+        <div className="results-container">
+          {searchMode === "managers" && filteredManagers.length === 0 && (
+            <p>No other managers found.</p>
+          )}
 
-        {searchMode === "employees" &&
-          filteredEmployees.length === 0 &&
-          searchTerm.length > 0 && <p>No employees found.</p>}
+          {searchMode === "employees" && filteredEmployees.length === 0 && (
+            <p>No other employees found.</p>
+          )}
 
-        {searchMode === "managers" &&
-          filteredManagers.map((mgr) => {
-            const isExpanded = expandedManager === mgr;
-            const managerDirects = employees.filter(
-              (emp) => emp.manager === mgr
-            );
-            const allSelected = managerDirects.every((emp) => isSelected(emp));
+          {searchMode === "managers" &&
+            filteredManagers.map((mgr) => {
+              const isExpanded = expandedManager === mgr;
+              const managerDirects = employees.filter(
+                (emp) => emp.manager === mgr
+              );
+              const allSelected = managerDirects.every((emp) =>
+                isSelected(emp)
+              );
 
-            return (
-              <div key={mgr} className="manager-item">
-                <div className="manager-header">
-                  <div
-                    className="manager-left"
-                    onClick={() => setExpandedManager(isExpanded ? null : mgr)}
-                  >
-                    <span>{mgr}</span>
-                    <span>{isExpanded ? "▲" : "▼"}</span>
+              return (
+                <div key={mgr} className="manager-item">
+                  <div className="manager-header">
+                    <div
+                      className="manager-left"
+                      onClick={() =>
+                        setExpandedManager(isExpanded ? null : mgr)
+                      }
+                    >
+                      <span>{mgr}</span>
+                      <span>({managerDirects.length} employees)</span>
+                      <span>{isExpanded ? "▲" : "▼"}</span>
+                    </div>
+
+                    {isExpanded && managerDirects.length > 0 && (
+                      <label className="checkbox-label select-all-inline">
+                        <input
+                          type="checkbox"
+                          checked={allSelected}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              const newEmployees = managerDirects.filter(
+                                (emp) => !isSelected(emp)
+                              );
+                              setSelectedEmployees([
+                                ...selectedEmployees,
+                                ...newEmployees,
+                              ]);
+                            } else {
+                              const remaining = selectedEmployees.filter(
+                                (emp) => emp.manager !== mgr
+                              );
+                              setSelectedEmployees(remaining);
+                            }
+                          }}
+                        />
+                        Select All
+                      </label>
+                    )}
                   </div>
 
                   {isExpanded && (
-                    <label className="checkbox-label select-all-inline">
-                      <input
-                        type="checkbox"
-                        checked={allSelected}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            const newEmployees = managerDirects.filter(
-                              (emp) => !isSelected(emp)
-                            );
-                            setSelectedEmployees([
-                              ...selectedEmployees,
-                              ...newEmployees,
-                            ]);
-                          } else {
-                            const remaining = selectedEmployees.filter(
-                              (emp) => emp.manager !== mgr
-                            );
-                            setSelectedEmployees(remaining);
-                          }
-                        }}
-                      />
-                      Select All
-                    </label>
+                    <div className="directs-list">
+                      {managerDirects.map((emp) => (
+                        <label key={emp.id} className="checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={isSelected(emp)}
+                            onChange={() => toggleEmployeeSelection(emp)}
+                          />
+                          {emp.name} ({emp.email})
+                        </label>
+                      ))}
+                    </div>
                   )}
                 </div>
+              );
+            })}
 
-                {isExpanded && (
-                  <div className="directs-list">
-                    {managerDirects.map((emp) => (
-                      <label key={emp.id} className="checkbox-label">
-                        <input
-                          type="checkbox"
-                          checked={isSelected(emp)}
-                          onChange={() => toggleEmployeeSelection(emp)}
-                        />
-                        {emp.name} ({emp.email})
-                      </label>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-
-        {searchMode === "employees" &&
-          filteredEmployees.map((emp) => (
-            <label key={emp.id} className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={isSelected(emp)}
-                onChange={() => toggleEmployeeSelection(emp)}
-              />
-              {emp.name} ({emp.email}) - Manager: {emp.manager}
-            </label>
-          ))}
-      </div>
+          {searchMode === "employees" &&
+            filteredEmployees.map((emp) => (
+              <label key={emp.id} className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={isSelected(emp)}
+                  onChange={() => toggleEmployeeSelection(emp)}
+                />
+                {emp.name} ({emp.email}) - Manager: {emp.manager}
+              </label>
+            ))}
+        </div>
+      )}
 
       {/* Selected Employees */}
       <div className="selected-container">
@@ -218,7 +348,7 @@ const CreateTeam = () => {
         onClick={handleAddToTeam}
         disabled={selectedEmployees.length === 0 || teamName.trim() === ""}
       >
-        Add to Team
+        Create Team
       </button>
     </div>
   );
