@@ -1,18 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import employees from "../data/sampleEmployees.json";
 import "./DashboardHome.css";
 
-const DashboardHome = ({
-  managerName = "John Doe",
-  managerId = "M123",
-  managerEmail = "john.doe@example.com",
-}) => {
-  const navigate = useNavigate();
-  const [showSidebar, setShowSidebar] = useState(false);
-
-  const toggleSidebar = () => setShowSidebar(!showSidebar);
-
+const DashboardHome = ({ managerName = "John Doe" }) => {
   const managedEmployees = employees.filter(
     (emp) => emp.manager === managerName
   );
@@ -29,82 +19,54 @@ const DashboardHome = ({
 
   return (
     <div className="dashboard-container">
-      {/* Toggle Button */}
-      <button className="toggle-button" onClick={toggleSidebar}>
-        ☰
-      </button>
+      <div className="greeting">Hey {managerName} 👋</div>
 
-      {/* Sidebar */}
-      {showSidebar && (
-        <aside className="sidebar">
-          <h2>{managerName}</h2>
-          <p>ID: {managerId}</p>
-          <p>Email: {managerEmail}</p>
-          <button
-            className="btn primary"
-            onClick={() => navigate("/create-team")}
-          >
-            + Create Team
-          </button>
-          <button
-            className="btn secondary"
-            onClick={() => navigate("/manage-teams")}
-          >
-            Manage Teams
-          </button>
-        </aside>
-      )}
-
-      {/* Main Content */}
-      <main className="dashboard">
-        <section className="dashboard-section">
-          <div className="greeting">Hey {managerName} 👋</div>
-          <h2>Your Employees</h2>
-          <div className="table-wrapper">
-            <table className="employee-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
+      <section className="dashboard-section">
+        <h2>Your Employees</h2>
+        <div className="table-wrapper">
+          <table className="employee-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentEmployees.map((emp) => (
+                <tr key={emp.id}>
+                  <td>{emp.id}</td>
+                  <td>{emp.name}</td>
+                  <td>{emp.email}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {currentEmployees.map((emp) => (
-                  <tr key={emp.id}>
-                    <td>{emp.id}</td>
-                    <td>{emp.name}</td>
-                    <td>{emp.email}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-          {/* Pagination */}
-          <div className="pagination">
-            <button
-              className="btn small"
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <span className="page-info">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              className="btn small"
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
-        </section>
-      </main>
+        {/* Pagination */}
+        <div className="pagination">
+          <button
+            className="btn small"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span className="page-info">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            className="btn small"
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      </section>
     </div>
   );
 };

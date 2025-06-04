@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import teams from "../data/sampleTeams.json";
 import employees from "../data/sampleEmployees.json";
-import "./ManageTeams.css";
+import "./ModifyTeams.css";
 
-const ManageTeams = ({ managerName = "John Doe" }) => {
+const ModifyTeams = ({ managerName = "John Doe" }) => {
   const [selectedTeam, setSelectedTeam] = useState(null);
 
   // Filter only the logged-in manager's teams
@@ -93,4 +93,4 @@ const ManageTeams = ({ managerName = "John Doe" }) => {
   );
 };
 
-export default ManageTeams;
+export default ModifyTeams;
