@@ -92,20 +92,26 @@ const CreateTeam = () => {
     setExpandedManager(null);
   };
 
-  // Check if all visible direct reports are selected
+  // Check if ALL direct reports are selected (not just current page)
   const allDirectsSelected =
-    paginatedDirects.length > 0 &&
-    paginatedDirects.every((emp) => isSelected(emp));
+    loggedInManagerDirects.length > 0 &&
+    loggedInManagerDirects.every((emp) => isSelected(emp));
 
-  // Handle select all direct reports (current page)
+  // Handle select all direct reports (ALL, not just current page)
   const handleSelectAllDirects = (checked) => {
     if (checked) {
-      const newEmployees = paginatedDirects.filter((emp) => !isSelected(emp));
+      // Select all direct reports that aren't already selected
+      const newEmployees = loggedInManagerDirects.filter(
+        (emp) => !isSelected(emp)
+      );
       setSelectedEmployees([...selectedEmployees, ...newEmployees]);
     } else {
-      const currentPageIds = new Set(paginatedDirects.map((emp) => emp.id));
+      // Deselect all direct reports
+      const directReportIds = new Set(
+        loggedInManagerDirects.map((emp) => emp.id)
+      );
       const remaining = selectedEmployees.filter(
-        (emp) => !currentPageIds.has(emp.id)
+        (emp) => !directReportIds.has(emp.id)
       );
       setSelectedEmployees(remaining);
     }
@@ -135,16 +141,15 @@ const CreateTeam = () => {
         <div className="directs-section">
           <h3>Your Direct Reports ({loggedInManagerDirects.length})</h3>
           <div className="directs-container">
-            {paginatedDirects.length > 0 && (
-              <label className="checkbox-label select-all">
-                <input
-                  type="checkbox"
-                  checked={allDirectsSelected}
-                  onChange={(e) => handleSelectAllDirects(e.target.checked)}
-                />
-                Select All on Page {directsPage}
-              </label>
-            )}
+            {/* Single Select All for ALL direct reports */}
+            <label className="checkbox-label select-all">
+              <input
+                type="checkbox"
+                checked={allDirectsSelected}
+                onChange={(e) => handleSelectAllDirects(e.target.checked)}
+              />
+              Select All Direct Reports
+            </label>
 
             <div className="directs-list">
               {paginatedDirects.map((emp) => (
