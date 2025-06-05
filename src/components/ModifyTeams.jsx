@@ -9,6 +9,7 @@ const ModifyTeams = ({ managerName = "John Doe" }) => {
   const [originalTeamName, setOriginalTeamName] = useState("");
   const [editNameMode, setEditNameMode] = useState(false);
   const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]); // All members that should be displayed in the table
   const [currentPage, setCurrentPage] = useState(1);
   const employeesPerPage = 7;
 
@@ -16,6 +17,9 @@ const ModifyTeams = ({ managerName = "John Doe" }) => {
   const [searchMode, setSearchMode] = useState("managers");
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedManager, setExpandedManager] = useState(null);
+
+  // Track employees that should be hidden from search after modal closes
+  const [committedEmployeeIds, setCommittedEmployeeIds] = useState([]);
 
   // Pagination for Your Direct Reports
   const [directReportsPage, setDirectReportsPage] = useState(1);
@@ -33,7 +37,10 @@ const ModifyTeams = ({ managerName = "John Doe" }) => {
     setTeamName(team.teamName);
     setOriginalTeamName(team.teamName);
     const members = employees.filter((e) => team.employeeIds.includes(e.id));
-    setSelectedEmployees(members);
+    setSelectedEmployees(members); // Initially all team members are selected
+    setTeamMembers(members); // Set the team members that should always be displayed
+    // Set committed IDs to currently selected members
+    setCommittedEmployeeIds(members.map((emp) => emp.id));
     setEditNameMode(false);
     setAddMembersMode(false);
     setSearchTerm("");
@@ -65,6 +72,27 @@ const ModifyTeams = ({ managerName = "John Doe" }) => {
     setSearchResultsPage(1);
   };
 
+  const handleAddMembersDone = () => {
+    // Add newly selected employees to team members if they're not already there
+    const newMembers = selectedEmployees.filter(
+      (emp) => !teamMembers.some((member) => member.id === emp.id)
+    );
+    setTeamMembers([...teamMembers, ...newMembers]);
+
+    // Update committed employee IDs to current selection
+    setCommittedEmployeeIds(selectedEmployees.map((emp) => emp.id));
+    setAddMembersMode(false);
+  };
+
+  const handleAddMembersCancel = () => {
+    // Revert to committed state
+    const committedEmployees = employees.filter((emp) =>
+      committedEmployeeIds.includes(emp.id)
+    );
+    setSelectedEmployees(committedEmployees);
+    setAddMembersMode(false);
+  };
+
   const toggleEmployee = (emp) => {
     if (selectedEmployees.some((e) => e.id === emp.id)) {
       setSelectedEmployees(selectedEmployees.filter((e) => e.id !== emp.id));
@@ -74,12 +102,14 @@ const ModifyTeams = ({ managerName = "John Doe" }) => {
   };
 
   const isSelected = (emp) => selectedEmployees.some((e) => e.id === emp.id);
+  const isCommitted = (emp) => committedEmployeeIds.includes(emp.id);
 
   const saveTeam = () => {
     alert(`Team "${teamName}" saved with ${selectedEmployees.length} members.`);
     setSelectedTeam(null);
   };
 
+  // Modified filtering logic for search results
   const filteredManagers =
     searchTerm.trim() === ""
       ? []
@@ -88,7 +118,7 @@ const ModifyTeams = ({ managerName = "John Doe" }) => {
           .filter((mgr) => mgr !== managerName) // Exclude the logged-in manager
           .filter((mgr) => {
             const managerDirects = employees.filter(
-              (emp) => emp.manager === mgr && !isSelected(emp)
+              (emp) => emp.manager === mgr && !isCommitted(emp) // Use committed instead of selected
             );
             return managerDirects.length > 0;
           });
@@ -99,19 +129,19 @@ const ModifyTeams = ({ managerName = "John Doe" }) => {
       : employees.filter(
           (emp) =>
             emp.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-            !isSelected(emp)
+            !isCommitted(emp) // Use committed instead of selected
         );
 
   const getManagerDirects = (mgr) =>
-    employees.filter((emp) => emp.manager === mgr && !isSelected(emp));
+    employees.filter((emp) => emp.manager === mgr && !isCommitted(emp)); // Use committed instead of selected
 
   const loggedInManagerDirects = employees.filter(
-    (emp) => emp.manager === managerName && !isSelected(emp)
+    (emp) => emp.manager === managerName && !isCommitted(emp) // Use committed instead of selected
   );
 
-  // Pagination for main team table
-  const totalPages = Math.ceil(selectedEmployees.length / employeesPerPage);
-  const paginatedEmployees = selectedEmployees.slice(
+  // Pagination for main team table - use teamMembers instead of selectedEmployees
+  const totalPages = Math.ceil(teamMembers.length / employeesPerPage);
+  const paginatedEmployees = teamMembers.slice(
     (currentPage - 1) * employeesPerPage,
     currentPage * employeesPerPage
   );
@@ -507,15 +537,12 @@ const ModifyTeams = ({ managerName = "John Doe" }) => {
             )}
 
             <div className="modal-actions">
-              <button
-                className="btn primary"
-                onClick={() => setAddMembersMode(false)}
-              >
+              <button className="btn primary" onClick={handleAddMembersDone}>
                 Done
               </button>
               <button
                 className="btn secondary"
-                onClick={() => setAddMembersMode(false)}
+                onClick={handleAddMembersCancel}
               >
                 Cancel
               </button>
